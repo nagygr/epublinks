@@ -1,0 +1,13 @@
+# Binaries for programs and plugins
+build
+
+# Ctag list
+GPATH
+GRTAGS
+GTAGS
+cscope.out
+tags
+
+# Code attic
+attic/
+
