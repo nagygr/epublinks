@@ -1,6 +1,9 @@
 # Binaries for programs and plugins
 build
 
+# Test artifacts
+coverage.out
+
 # Ctag list
 GPATH
 GRTAGS
