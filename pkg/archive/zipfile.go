@@ -9,9 +9,8 @@ package archive
 import (
 	"archive/zip"
 	"bytes"
-	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 )
@@ -25,7 +24,7 @@ type ZipFileReader struct {
 	reader *zip.ReadCloser
 }
 
-var _ zipReader = (*ZipFileReader)(nil)
+var _ ZipReader = (*ZipFileReader)(nil)
 
 func (r *ZipFileReader) Files() []*zip.File {
 	return r.reader.File
@@ -51,8 +50,10 @@ func (r *ZipUrlReader) Close() error {
 
 // ZipFile is an implementation of the ZipData interface for actual zip files.
 type ZipFile struct {
-	data zipReader
+	data ZipReader
 }
+
+var _ ZipData = (*ZipFile)(nil)
 
 // NewZipFile creates a ZipFile for an actual zip file given by its path.
 func NewZipFile(path string) (*ZipFile, error) {
@@ -73,7 +74,7 @@ func NewZipFileFromUrl(url string) (*ZipFile, error) {
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
